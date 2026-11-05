@@ -1,0 +1,17 @@
+# downloaded tooling (route.py fetches Freerouting; pip installs shapely into pylib)
+tools/*.jar
+tools/pylib/
+tools/easyeda/
+__pycache__/
+
+# scratch output from the build pipeline
+out/
+
+# KiCad local state and backups
+*.kicad_prl
+*-backups/
+fp-info-cache
+.DS_Store
+
+# Freerouting run logs
+logs/
