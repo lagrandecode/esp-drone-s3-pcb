@@ -116,6 +116,14 @@ for n, (q, d, r) in DRIVERS.items():
 
 BAT_PADS = {"+": (4.5, 13.0), "-": (-1.5, 13.0)}
 
+# Equivalents used for the LCSC (buy loose parts) BOM where the JLCPCB basic part
+# is only sold by LCSC in full reels or is out of stock as cut tape.
+LCSC_SUBSTITUTES = {
+    "C15849": "C1592",   # 1uF 0603 X5R (16 V, EN pin only sees 3.3 V)
+    "C14663": "C1591",   # 100nF 0603 X7R 50 V
+    "C57112": "C1589",   # 10nF 0603 X7R 50 V
+}
+
 # Pad mapping KiCad -> EasyEDA for polarised two-terminal parts whose EasyEDA
 # pad numbers do not follow KiCad's cathode = pad 1 convention.
 EASYEDA_PAD_MAP = {

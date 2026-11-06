@@ -13,6 +13,8 @@ flown from a phone over Wi-Fi.
 | --- | --- |
 | `production/esp_drone_s3_gerbers.zip` | Upload this to JLCPCB as the PCB |
 | `production/esp_drone_s3_bom.csv` | Bill of materials with LCSC part numbers (JLCPCB format) |
+| `production/esp_drone_s3_bom_lcsc_shopping.csv` | Same parts for buying loose from LCSC (three capacitors swapped for in-stock cut-tape equivalents) |
+| `production/esp_drone_s3_assembly_guide.html` | Interactive placement guide for hand assembly |
 | `production/esp_drone_s3_cpl.csv` | Pick-and-place file with JLCPCB rotation and centroid corrections applied |
 | `production/esp_drone_s3_netlist.csv` | Every net and the pins it connects (the design has no schematic sheet) |
 | `production/render_*.png` | 3D renders |

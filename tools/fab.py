@@ -101,7 +101,7 @@ def write_bom_cpl(board):
         px, py = pcbnew.ToMM(fp.GetPosition().x), pcbnew.ToMM(fp.GetPosition().y)
         ox, oy = rot(dx, dy, r)
         rows.append([ref, f"{px + ox:.4f}mm", f"{-(py + oy):.4f}mm", "Top", f"{(r + th) % 360:.1f}"])
-        groups.setdefault((value, name, lcsc), []).append(ref)
+        groups.setdefault((name, lcsc), []).append((ref, value))
 
     def natural(s):
         return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", s)]
@@ -110,11 +110,18 @@ def write_bom_cpl(board):
         w = csv.writer(f)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
         w.writerows(sorted(rows, key=lambda r: natural(r[0])))
-    with open(os.path.join(PROD, f"{NAME}_bom.csv"), "w", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #", "Quantity"])
-        for (value, name, lcsc), refs in sorted(groups.items(), key=lambda g: natural(sorted(g[1], key=natural)[0])):
-            w.writerow([value, ",".join(sorted(refs, key=natural)), name, lcsc, len(refs)])
+
+    def bom(path, substitutes):
+        with open(path, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #", "Quantity"])
+            for (name, lcsc), items in sorted(groups.items(), key=lambda g: natural(min((r for r, _ in g[1]), key=natural))):
+                refs = sorted((r for r, _ in items), key=natural)
+                values = sorted({v for _, v in items})
+                w.writerow(["/".join(values), ",".join(refs), name, substitutes.get(lcsc, lcsc), len(refs)])
+
+    bom(os.path.join(PROD, f"{NAME}_bom.csv"), {})
+    bom(os.path.join(PROD, f"{NAME}_bom_lcsc_shopping.csv"), D.LCSC_SUBSTITUTES)
     open(os.path.join(PROD, "jlc_corrections.txt"), "w").write("\n".join(report) + "\n")
     print("\n".join(report))
 
