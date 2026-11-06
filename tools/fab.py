@@ -112,9 +112,9 @@ def write_bom_cpl(board):
         w.writerows(sorted(rows, key=lambda r: natural(r[0])))
     with open(os.path.join(PROD, f"{NAME}_bom.csv"), "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])
+        w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #", "Quantity"])
         for (value, name, lcsc), refs in sorted(groups.items(), key=lambda g: natural(sorted(g[1], key=natural)[0])):
-            w.writerow([value, ",".join(sorted(refs, key=natural)), name, lcsc])
+            w.writerow([value, ",".join(sorted(refs, key=natural)), name, lcsc, len(refs)])
     open(os.path.join(PROD, "jlc_corrections.txt"), "w").write("\n".join(report) + "\n")
     print("\n".join(report))
 
